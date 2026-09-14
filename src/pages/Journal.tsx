@@ -3,12 +3,15 @@ import { Input } from "@/components/ui/input"
 import { AccountCombobox } from "@/components/CommandManyItems";
 import { DateInput } from "@/components/DateInput";
 import { AmountInput } from "@/components/ui/AmountInput";
-import { useJournalForm } from "@/customhook/useJournalForm";
+import { useJournalForm } from "@/hooks/useJournalForm";
 
 
 export const Journal=() => {
+
+
   const {
     date, setDate,
+    dateError,setDateError,
     debitAccount, setDebitAccount,
     debitSubAccount, setDebitSubAccount,
     debitAmount, setDebitAmount,
@@ -18,6 +21,8 @@ export const Journal=() => {
     description, setDescription,
     handleSave,
   } = useJournalForm()
+
+
 
 
 
@@ -42,7 +47,7 @@ export const Journal=() => {
 </div>
 
 <div className="grid grid-cols-7 gap-1 p-2 ">
-  <DateInput value={date} onValueChange={setDate} /> 
+  <DateInput value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError}/> 
  <AccountCombobox
       value={debitAccount?.code}
       onValueChange={setDebitAccount} />

@@ -8,6 +8,7 @@ import { Ledger } from "../pages/Ledger";
 import { TrialBalance } from "../pages/TrialBalance";
 import { Settings } from "../pages/Settings";
 import { Page404 } from "../pages/Page404";
+import { Debug } from "@/pages/Debug";
 
 
 export const Router =()=> {
@@ -21,9 +22,10 @@ return (
             <Route path=":id" element={<JournalDetail />} />
         </Route>
 
-        <Route path="/ledger " element={<Ledger/>} />
+        <Route path="/ledger" element={<Ledger/>} />
         <Route path="/trial-balance" element={<TrialBalance/>} />
         <Route path="/settings" element={<Settings/>} />
+        <Route path="/debug" element={<Debug></Debug>} />
 
         </Route>
         <Route path="*" element={<Page404 />} />

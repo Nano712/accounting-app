@@ -1,11 +1,14 @@
 import type { AccountTitle } from "@/data/AccountTitle"
 import type { JournalEntry } from "@/data/JournalEntry"
+import { useJournalStore } from "@/store/useJournalStore"
 import { useRef, useState } from "react"
 import { toast } from "sonner"
 
 
+
 export function useJournalForm(){
   const [date, setDate] = useState<Date | undefined>(undefined)
+  const [dateError, setDateError] = useState<boolean>(false)
   const [debitAccount, setDebitAccount] = useState<AccountTitle | null>(null)
   const [debitSubAccount, setDebitSubAccount] = useState("")
   const [debitAmount, setDebitAmount] = useState(0)
@@ -14,15 +17,19 @@ export function useJournalForm(){
   const [creditAmount, setCreditAmount] = useState(0)
   const [description, setDescription] = useState("")
   
+  const addEntry = useJournalStore((state) => state.addEntry);
 
-// contextで管理予定
-  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
 
   const idCounter = useRef(0)
 
 const handleSave = () => {
   if (!date) {
     toast.error("日付を入力してください", {
+  className: "!bg-red-500 !text-white",})
+    return
+  }
+  if (dateError) {
+    toast.error("不明な日付です", {
   className: "!bg-red-500 !text-white",})
     return
   }
@@ -69,7 +76,7 @@ const handleSave = () => {
   }
 
 //   保存
-  setJournalEntries([...journalEntries, newEntry])
+  addEntry(newEntry)
   toast.success("保存しました", {className: "!bg-green-500 !text-white",
 })
 
@@ -91,6 +98,7 @@ const handleSave = () => {
 
   return {
     date, setDate,
+    dateError,setDateError,
     debitAccount, setDebitAccount,
     debitSubAccount, setDebitSubAccount,
     debitAmount, setDebitAmount,
