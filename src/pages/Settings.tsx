@@ -24,7 +24,7 @@ export const Settings=() => {
                 <label className="ml-4">期首月</label>
                 <Input value={inputMonth} onChange={(e) => setInputMonth(Number(e.target.value))} type="number" min={1} max={12} className="w-32"/>
                 <Button onClick={()=>{if (inputMonth < 1 || inputMonth > 12) {
-      toast.error("月は、1から12の間で、入力してください",{
+      toast.error("月は1から12の間で入力してください",{
   className: "!bg-red-500 !text-white",})
       return
     }setStartMonth(Number(inputMonth))}}>保存</Button>

@@ -30,13 +30,19 @@ export const Debug =() => {
         {journalEntries.map((entry) => (
           <TableRow key={entry.id}>
             <TableCell>{entry.date.toLocaleDateString()}</TableCell>
-            <TableCell>{entry.debitAccount.name}</TableCell>
-            <TableCell>{entry.debitAmount}</TableCell>
-            <TableCell>{entry.creditAccount.name}</TableCell>
-            <TableCell>{entry.creditAmount}</TableCell>
+            {entry.debitLines.map((line)=><TableCell>{line.account?.name}</TableCell>)}
+            {entry.debitLines.map((line)=><TableCell>{line.amount}</TableCell>)}
+            {/* <TableCell>{entry.debitLines[0].amount}</TableCell> */}
+            {entry.creditLines.map((line)=><TableCell>{line.account?.name}</TableCell>)}
+            {/* <TableCell>{entry.creditLines[0].account?.name}</TableCell> */}
+            {entry.debitLines.map((line)=><TableCell>{line.amount}</TableCell>)}
+            {/* <TableCell>{entry.creditLines[0].amount}</TableCell> */}
             <TableCell>{entry.description}</TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
     )};
+
+
+

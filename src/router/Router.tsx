@@ -9,6 +9,8 @@ import { TrialBalance } from "../pages/TrialBalance";
 import { Settings } from "../pages/Settings";
 import { Page404 } from "../pages/Page404";
 import { Debug } from "@/pages/Debug";
+import { BalanceSheet } from "@/pages/BalanceSheet";
+import { IncomeStatement } from "@/pages/IncomeStatement";
 
 
 export const Router =()=> {
@@ -24,6 +26,8 @@ return (
 
         <Route path="/ledger" element={<Ledger/>} />
         <Route path="/trial-balance" element={<TrialBalance/>} />
+        <Route path="/pl" element={<IncomeStatement/>} />
+        <Route path="/bs" element={<BalanceSheet/>} />
         <Route path="/settings" element={<Settings/>} />
         <Route path="/debug" element={<Debug></Debug>} />
 

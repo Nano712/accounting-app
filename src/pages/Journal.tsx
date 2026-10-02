@@ -1,33 +1,27 @@
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { AccountCombobox } from "@/components/CommandManyItems";
-import { DateInput } from "@/components/DateInput";
-import { AmountInput } from "@/components/ui/AmountInput";
+import { JournalRow } from "@/components/JournalRow";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import type { JournalFormState } from "@/data/JournalFormState ";
 import { useJournalForm } from "@/hooks/useJournalForm";
 
-
-export const Journal=() => {
-
+export const Journal=() => { 
 
   const {
-    date, setDate,
-    dateError,setDateError,
-    debitAccount, setDebitAccount,
-    debitSubAccount, setDebitSubAccount,
-    debitAmount, setDebitAmount,
-    creditAccount, setCreditAccount,
-    creditSubAccount, setCreditSubAccount,
-    creditAmount, setCreditAmount,
-    description, setDescription,
-    handleSave,
-  } = useJournalForm()
+  date, setDate,
+  dateError, setDateError,
+  rows, updateRow,
+  description, setDescription,
+  totalDebit, totalCredit,
+  handleSave,
+} = useJournalForm()
+
+  const formState: JournalFormState = {
+  date, setDate,
+  dateError, setDateError,
+  description, setDescription,
+}
 
 
-
-
-
-
-  
     return(
         <>
         <div className="grid grid-cols-7 gap-2  p-2  bg-gray-300" >
@@ -46,31 +40,19 @@ export const Journal=() => {
   <Label className="col-span-2" onClick={handleSave}>保存ボタン(仮)</Label>
 </div>
 
-<div className="grid grid-cols-7 gap-1 p-2 ">
-  <DateInput value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError}/> 
- <AccountCombobox
-      value={debitAccount?.code}
-      onValueChange={setDebitAccount} />
-  <AmountInput className="rounded-none" 
-  value={debitAmount === 0?"":debitAmount} onChange={(e) => setDebitAmount(Number(e.target.value))}/>
-  <AccountCombobox
-      value={creditAccount?.code} onValueChange={setCreditAccount} />
-      <AmountInput className="rounded-none" 
-      value={creditAmount === 0?"":creditAmount} onChange={(e) => setCreditAmount(Number(e.target.value))}/>
-      <Input className="col-span-2 rounded-none" 
-      value={description} onChange={(e) => setDescription(e.target.value)}/>
-
-      <Input readOnly className="rounded-none"/>
-      <Input className="rounded-none" 
-      value={debitSubAccount} onChange={(e) => setDebitSubAccount(e.target.value)}/>
-      <AmountInput className="rounded-none" readOnly/>
-      <Input className="rounded-none"
-      value={creditSubAccount} onChange={(e) => setCreditSubAccount(e.target.value)}/>
-      <AmountInput className="rounded-none" readOnly/>
-      <Input className="col-span-2 rounded-none"/>
-      </div>
-
-      
-
+  {rows.map((row, index) => (
+  <JournalRow
+    key={index}
+    isFirstRow={index === 0}
+    index={index}
+    row={row}
+    onUpdate={(updated) => updateRow(index, updated)}
+    formState={formState}
+    
+  />
+))}
+<div>借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
+<Button onClick={handleSave}>保存</Button>
+       
         </>
     )};

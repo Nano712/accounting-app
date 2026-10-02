@@ -11,7 +11,7 @@ type DateInputProps = {
   onErrorChange:(error: boolean) => void
 }
 
-export function DateInput({ value, onValueChange,isError,onErrorChange}: DateInputProps) {
+export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateInputProps) {
   const [inputValue, setInputValue] = useState(
     value ? format(value, "MM/dd") : ""
   )
@@ -53,7 +53,7 @@ export function DateInput({ value, onValueChange,isError,onErrorChange}: DateInp
       value={inputValue}
       onChange={handleChange}
       onBlur={handleBlur}
-      placeholder="MM/DD"
+      placeholder={"MM/DD"}
       className={cn("rounded-none", isError && "border-3 border-red-500")}
     />
   )

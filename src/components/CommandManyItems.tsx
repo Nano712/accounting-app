@@ -31,9 +31,10 @@ const categoryGroups = [
 type AccountComboboxProps = {
   value?: string
   onValueChange: (account: AccountTitle) => void
+  isFirstRow?: boolean
 }
 
-export function AccountCombobox({ value, onValueChange }: AccountComboboxProps) {
+export function AccountCombobox({ value, onValueChange,isFirstRow }: AccountComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const selected = accountTitles.find((a) => a.code === value)
 
@@ -44,7 +45,7 @@ export function AccountCombobox({ value, onValueChange }: AccountComboboxProps) 
         variant="outline"
         className="w-full justify-start rounded-none"
       >
-        {selected ? `${selected.code} - ${selected.name}` : "勘定科目を選択"}
+        {selected ? `${selected.code} - ${selected.name}` : isFirstRow?"勘定科目を選択":""}
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen} >
