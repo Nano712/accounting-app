@@ -32,11 +32,8 @@ export const Debug =() => {
             <TableCell>{entry.date.toLocaleDateString()}</TableCell>
             {entry.debitLines.map((line)=><TableCell>{line.account?.name}</TableCell>)}
             {entry.debitLines.map((line)=><TableCell>{line.amount}</TableCell>)}
-            {/* <TableCell>{entry.debitLines[0].amount}</TableCell> */}
             {entry.creditLines.map((line)=><TableCell>{line.account?.name}</TableCell>)}
-            {/* <TableCell>{entry.creditLines[0].account?.name}</TableCell> */}
-            {entry.debitLines.map((line)=><TableCell>{line.amount}</TableCell>)}
-            {/* <TableCell>{entry.creditLines[0].amount}</TableCell> */}
+            {entry.creditLines.map((line)=><TableCell>{line.amount}</TableCell>)}
             <TableCell>{entry.description}</TableCell>
           </TableRow>
         ))}

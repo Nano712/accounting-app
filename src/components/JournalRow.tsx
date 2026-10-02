@@ -17,10 +17,6 @@ type JournalRowProps = {
 export const JournalRow = ({ isFirstRow, row, onUpdate, formState }: JournalRowProps) => {
   const { date, setDate, dateError, setDateError, description, setDescription } = formState
 
-
-
-
-
   return(
     <>
         
