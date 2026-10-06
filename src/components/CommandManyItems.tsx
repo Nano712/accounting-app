@@ -30,7 +30,7 @@ const categoryGroups = [
 
 type AccountComboboxProps = {
   value?: string
-  onValueChange: (account: AccountTitle) => void
+  onValueChange: (account: AccountTitle | null) => void
   isFirstRow?: boolean
 }
 
@@ -41,7 +41,13 @@ export function AccountCombobox({ value, onValueChange,isFirstRow }: AccountComb
   return (
     <div className="flex flex-col gap-2">
       <Button
-        onClick={() => setOpen(true)}
+        onClick={() => {
+    if (selected) {
+      onValueChange(null)
+    } else {
+      setOpen(true)
+    }
+  }}
         variant="outline"
         className="w-full justify-start rounded-none"
       >

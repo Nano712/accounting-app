@@ -33,7 +33,8 @@ export function useJournalForm() {
     Array.from({ length: ROW_COUNT }, () => ({ ...emptyRow }))
   )
   const addEntry = useJournalStore((state) => state.addEntry)
-  const idCounter = useRef(0)
+  
+  const idCounter = useRef(1)
 
   const updateRow = (index: number, updated: Partial<FormRow>) => {
     const newRows = [...rows]
@@ -43,6 +44,16 @@ export function useJournalForm() {
 
   const totalDebit = rows.reduce((sum, r) => sum + r.debitAmount, 0)
   const totalCredit = rows.reduce((sum, r) => sum + r.creditAmount, 0)
+
+  const hasAccountError = rows.some((r) =>
+  (r.debitAmount !== 0 && !r.debitAccount) ||
+  (r.creditAmount !== 0 && !r.creditAccount)
+)
+
+const hasAmountError = rows.some((r) =>
+  (r.debitAmount === 0 && r.debitAccount) ||
+  (r.creditAmount === 0 && r.creditAccount)
+)
   
 
 const handleSave = () => {
@@ -61,23 +72,38 @@ const handleSave = () => {
   toast.error("借方・貸方をそれぞれ入力してください", { className: "!bg-red-500 !text-white" })
   return
 }
+if (hasAmountError) {
+    toast.error("金額に未入力の欄があります", {
+  className: "!bg-red-500 !text-white",})
+    return
+  }
+  if (hasAccountError) {
+    toast.error("科目に未入力の欄があります", {
+  className: "!bg-red-500 !text-white",})
+    return
+  }
   if (totalDebit !== totalCredit) {
     toast.error("借方と貸方の金額が一致していません", {
   className: "!bg-red-500 !text-white",})
     return
   }
 
-  const debitLines: JournalLine[] = rows.map((r) => ({
+  const validRows = rows.filter((r) =>
+  r.debitAccount ||
+  r.debitAmount !== 0 ||
+  r.creditAccount ||
+  r.creditAmount !== 0
+)
+  const debitLines: JournalLine[] = validRows.map((r) => ({
       account: r.debitAccount,
       subAccount: r.debitSubAccount,
       amount: r.debitAmount,
     }))
-    const creditLines: JournalLine[] = rows.map((r) => ({
+    const creditLines: JournalLine[] = validRows.map((r) => ({
       account: r.creditAccount,
       subAccount: r.creditSubAccount,
       amount: r.creditAmount,
     }))
-
 
   const newId = idCounter.current
   idCounter.current += 1;

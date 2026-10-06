@@ -7,9 +7,24 @@ type JournalStore = {
 }
 
 export const useJournalStore = create<JournalStore>((set) => ({
-  journalEntries: [],
+  journalEntries: JSON.parse(
+    localStorage.getItem("journalEntries") ?? "[]"
+  ).map((entry: JournalEntry) => ({
+    ...entry,
+    date: new Date(entry.date),
+  })),
+  
   addEntry: (entry) =>
-    set((state) => ({
-      journalEntries: [...state.journalEntries, entry],
-    })),
+    set((state) => {
+      const newEntries = [...state.journalEntries, entry]
+
+      localStorage.setItem(
+        "journalEntries",
+        JSON.stringify(newEntries)
+      )
+
+      return {
+        journalEntries: newEntries,
+      }
+    }),
 }))

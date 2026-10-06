@@ -13,6 +13,7 @@ import {
 const navItems = [
   { to: "/", label: "ホーム" },
   { to: "/journal", label: "仕訳" },
+  { to: "/journal/list", label: "仕訳日記帳" },
   { to: "/ledger", label: "元帳" },
   { to: "/trial-balance", label: "試算表" },
   { to: "/pl", label: "損益計算書（P/L）" },
@@ -31,7 +32,7 @@ import {
 import { useYearStore } from "@/store/useYearStore"
 
 const availableYears = [
- 2025,
+  2025,
   2026,
   2027,
   2028,

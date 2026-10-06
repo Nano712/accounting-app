@@ -6,7 +6,7 @@ export function AmountInput({ className, ...props }: React.ComponentProps<typeof
     <Input
       type="number"
       className={cn(
-        "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+        "text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
         className
       )}
       {...props}

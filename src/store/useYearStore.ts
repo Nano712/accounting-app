@@ -8,8 +8,19 @@ type FiscalYear = {
 }
 
 export const useYearStore = create<FiscalYear>((set) => ({
-  fiscalYear: 2026,
-  setFiscalYear: (fiscalYear) => set({ fiscalYear }),
-  startMonth: 1,
-  setStartMonth: (startMonth) => set({ startMonth }),
+  fiscalYear: Number(
+    localStorage.getItem("fiscalYear") ?? "2026"
+  ),
+  setFiscalYear: (fiscalYear) => {
+  localStorage.setItem("fiscalYear", String(fiscalYear))
+  set({ fiscalYear })
+},
+
+
+  startMonth: Number(
+    localStorage.getItem("startMonth") ?? "1"
+  ),
+  setStartMonth: (startMonth) => {
+    localStorage.setItem("startMonth", String(startMonth))
+    set({ startMonth })},
 }));

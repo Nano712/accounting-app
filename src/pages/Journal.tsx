@@ -5,6 +5,7 @@ import type { JournalFormState } from "@/data/JournalFormState ";
 import { useJournalForm } from "@/hooks/useJournalForm";
 
 export const Journal=() => { 
+  
 
   const {
   date, setDate,

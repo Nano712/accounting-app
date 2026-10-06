@@ -19,8 +19,6 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState }: JournalRowP
 
   return(
     <>
-        
-
 <div className="grid grid-cols-7 gap-1 p-2 ">
   {isFirstRow ? (<DateInput value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError} /> ) 
   : (<Input className="rounded-none" readOnly />)}
