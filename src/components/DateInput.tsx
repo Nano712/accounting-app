@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import { Input } from "@/components/ui/input"
 import { format, parse, isValid } from "date-fns"
 import { cn } from "cn"
@@ -11,6 +11,7 @@ type DateInputProps = {
   onErrorChange:(error: boolean) => void
 }
 
+
 export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateInputProps) {
   const [inputValue, setInputValue] = useState(
     value ? format(value, "MM/dd") : ""
@@ -18,13 +19,15 @@ export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateIn
 
   const fiscalYear = useYearStore((state)=>state.fiscalYear);
   const startMonth = useYearStore((state)=>state.startMonth);
-
-  useEffect(() => {
-    if (!value) {
-      setInputValue("")}
-  }, [value])
+  const isTypingRef = useRef(false)
+// 日付の10の桁の入力に必要
+useEffect(() => {
+  if (isTypingRef.current) return 
+   setInputValue(value ? format(value, "MM/dd") : "")
+}, [value])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    isTypingRef.current = true
     const text = e.target.value
     setInputValue(text)
     onErrorChange(false)
@@ -39,6 +42,7 @@ export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateIn
     }}
 
      const handleBlur = () => {
+      isTypingRef.current = false
     const parsed = parse(`${fiscalYear}/${inputValue}`, "yyyy/MM/dd", new Date())
     if (!isValid(parsed) && inputValue !== "") {
       onErrorChange(true)
@@ -54,7 +58,7 @@ export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateIn
       onChange={handleChange}
       onBlur={handleBlur}
       placeholder={"MM/DD"}
-      className={cn("rounded-none", isError && "border-3 border-red-500")}
+      className={cn("text-right rounded-none", isError && "border-3 border-red-500")}
     />
   )
 }

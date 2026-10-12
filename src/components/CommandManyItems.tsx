@@ -39,8 +39,8 @@ export function AccountCombobox({ value, onValueChange,isFirstRow }: AccountComb
   const selected = accountTitles.find((a) => a.code === value)
 
   return (
-    <div className="flex flex-col gap-2">
-      <Button
+    <div className="flex flex-col max-w-30 gap-2 ">
+      <Button 
         onClick={() => {
     if (selected) {
       onValueChange(null)

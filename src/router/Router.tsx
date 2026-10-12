@@ -2,7 +2,7 @@ import { Route,Routes } from "react-router-dom";
 import { Layout } from "../components/Layout";
 import { Home } from "../pages/Home";
 import { Journal } from "../pages/Journal";
-import { JournalDetail } from "../pages/JournalDetail";
+import { JournalEdit } from "../pages/JournalEdit";
 import { JournalList } from "@/pages/JournalList";
 import { Ledger } from "../pages/Ledger";
 import { TrialBalance } from "../pages/TrialBalance";
@@ -20,9 +20,8 @@ return (
         <Route element={<Layout />}>
             <Route path="/" element={<Home/>} />
 
-        <Route path="/journal" element={<Journal />} >
-            <Route path=":id" element={<JournalDetail />} />
-        </Route>
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/journal/edit/:id" element={<JournalEdit/>} />
         
         <Route path="/journal/list" element={<JournalList/>}/>
         <Route path="/ledger" element={<Ledger/>} />
@@ -30,7 +29,7 @@ return (
         <Route path="/pl" element={<IncomeStatement/>} />
         <Route path="/bs" element={<BalanceSheet/>} />
         <Route path="/settings" element={<Settings/>} />
-        <Route path="/debug" element={<Debug></Debug>} />
+        <Route path="/debug" element={<Debug/>} />
 
         </Route>
         <Route path="*" element={<Page404 />} />

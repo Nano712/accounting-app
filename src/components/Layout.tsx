@@ -9,6 +9,14 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from "@/components/ui/sidebar"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useYearStore } from "@/store/useYearStore"
 
 const navItems = [
   { to: "/", label: "ホーム" },
@@ -22,14 +30,7 @@ const navItems = [
   { to: "/debug", label: "デバッグ" },
 ]
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useYearStore } from "@/store/useYearStore"
+
 
 const availableYears = [
   2025,
@@ -73,12 +74,12 @@ const endMonth = startMonth === 1 ? 12 : startMonth - 1
           
 
 <Select value={String(fiscalYear)} onValueChange={(value) => setFiscalYear(Number(value))}>
-  <SelectTrigger className="w-28">
+  <SelectTrigger className="w-28 cursor-pointer">
     <SelectValue>{fiscalYear}年度</SelectValue>
   </SelectTrigger>
   <SelectContent>
     {availableYears.map((year) => (
-      <SelectItem key={year} value={String(year)}>
+      <SelectItem key={year} value={String(year)} className={"cursor-pointer"}>
         {year}年度
       </SelectItem>
     ))}

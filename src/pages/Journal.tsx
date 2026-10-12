@@ -3,6 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import type { JournalFormState } from "@/data/JournalFormState ";
 import { useJournalForm } from "@/hooks/useJournalForm";
+import { useJournalValidation } from "@/hooks/useJournalValidation";
+import { useJournalStore } from "@/store/useJournalStore";
+import { useYearStore } from "@/store/useYearStore";
+import { buildJournalEntry } from "@/utils/buildJournalEntry";
+import { toast } from "sonner"
 
 export const Journal=() => { 
   
@@ -10,16 +15,51 @@ export const Journal=() => {
   const {
   date, setDate,
   dateError, setDateError,
-  rows, updateRow,
+  rows, setRows, updateRow,
   description, setDescription,
   totalDebit, totalCredit,
-  handleSave,
 } = useJournalForm()
 
   const formState: JournalFormState = {
   date, setDate,
   dateError, setDateError,
   description, setDescription,
+}
+
+ const validation = useJournalValidation({
+    date,
+    dateError,
+    rows,
+    totalDebit,
+    totalCredit,
+  })
+
+  const fiscalYear = useYearStore((state) => state.fiscalYear)
+  const addEntry = useJournalStore((state) => state.addEntry)
+
+const handleClickSave = () => {
+  if (!validation.validate()) return
+
+  addEntry(fiscalYear, buildJournalEntry({date: date!,
+  rows,
+  description}))
+
+  toast.success("保存しました", { className: "!bg-green-500 !text-white" })
+
+setDate(undefined)
+  setDateError(false)
+  setRows(
+    Array.from({ length: 5 }, () => ({
+      debitAccount: null,
+      debitSubAccount: "",
+      debitAmount: 0,
+      creditAccount: null,
+      creditSubAccount: "",
+      creditAmount: 0,
+    }))
+  )
+  setDescription("")
+  
 }
 
 
@@ -38,7 +78,6 @@ export const Journal=() => {
   <Label>消費税額</Label>
   <Label>貸方補助</Label>
   <Label>消費税額</Label>
-  <Label className="col-span-2" onClick={handleSave}>保存ボタン(仮)</Label>
 </div>
 
   {rows.map((row, index) => (
@@ -53,7 +92,7 @@ export const Journal=() => {
   />
 ))}
 <div>借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
-<Button onClick={handleSave}>保存</Button>
+<Button onClick={handleClickSave}>保存</Button>
        
         </>
     )};

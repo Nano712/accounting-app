@@ -12,15 +12,16 @@ type JournalRowProps = {
   row: FormRow               
   onUpdate: (updated: Partial<FormRow>) => void
   formState: JournalFormState
+  id?:number
 }
 
-export const JournalRow = ({ isFirstRow, row, onUpdate, formState }: JournalRowProps) => {
+export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: JournalRowProps) => {
   const { date, setDate, dateError, setDateError, description, setDescription } = formState
 
   return(
     <>
 <div className="grid grid-cols-7 gap-1 p-2 ">
-  {isFirstRow ? (<DateInput value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError} /> ) 
+  {isFirstRow ? (<DateInput key={id ?? "new"} value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError} /> ) 
   : (<Input className="rounded-none" readOnly />)}
   
  <AccountCombobox
@@ -36,10 +37,11 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState }: JournalRowP
       <AmountInput className="rounded-none" 
       value={row.creditAmount === 0 ? "" : row.creditAmount} onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}/>
 
-      <Input className="col-span-2 rounded-none" 
-      value={description} onChange={(e) => setDescription(e.target.value)}/>
+    {isFirstRow ? (<Input className="col-span-2 rounded-none" 
+      value={description} onChange={(e) => setDescription(e.target.value)}/> ) 
+  : (<Input readOnly className="col-span-2 rounded-none"/>)}
 
-      <Input readOnly className="rounded-none"/>
+      {isFirstRow ? (<Input readOnly value={id ? id : "" } className="text-right rounded-none"/>):(<Input className="rounded-none" readOnly />)}
 
       <Input className="rounded-none" 
       value={row.debitSubAccount}
