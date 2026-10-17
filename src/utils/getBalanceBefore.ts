@@ -1,13 +1,8 @@
 import { accountTitles } from "@/data/AccountTitle"
-import type { JournalEntry, JournalLine } from "@/data/JournalEntry"
+import type { JournalEntry} from "@/data/JournalEntry"
+import { sumLines } from "./sumLines"
 
 
-  
-
-const sumLines = (lines: JournalLine[], code: string) =>
-  lines
-    .filter((line) => line.account?.code === code)
-    .reduce((sum, line) => sum + line.amount, 0)
 
 const monthIndex = (m: number, startMonth: number) =>
   (m - startMonth + 12) % 12

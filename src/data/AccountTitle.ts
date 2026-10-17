@@ -28,10 +28,10 @@ export const revenueAccounts: AccountTitle[] = [
 export const expenseAccounts: AccountTitle[] = [
   { id: 9, code: "500", name: "消耗品費", category: "expense" },
   { id: 10, code: "501", name: "通信費", category: "expense" },
-  { id: 11, code: "501", name: "旅費交通費", category: "expense" },
-  { id: 12, code: "501", name: "水道光熱費", category: "expense" },
-  { id: 13, code: "501", name: "地代家賃", category: "expense" },
-  { id: 14, code: "501", name: "支払手数料", category: "expense" },
+  { id: 11, code: "502", name: "旅費交通費", category: "expense" },
+  { id: 12, code: "503", name: "水道光熱費", category: "expense" },
+  { id: 13, code: "504", name: "地代家賃", category: "expense" },
+  { id: 14, code: "505", name: "支払手数料", category: "expense" },
 ];
 
 // 全部まとめたもの

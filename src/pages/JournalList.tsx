@@ -63,7 +63,10 @@ const handleEdit = (id: number) => {
         {filteredEntries.map((entry) => (
           <TableRow key={entry.id} className="text-center">
             <TableCell className="align-top">{entry.id}</TableCell>
-            <TableCell className="align-top">{entry.date.toLocaleDateString()}</TableCell>
+            <TableCell className="align-top">{entry.date.toLocaleDateString("ja-JP", {
+  month: "numeric",
+  day: "numeric",
+})}</TableCell>
             <TableCell>{entry.debitLines.map((line)=><div>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
             <TableCell>{entry.debitLines.map((line)=><div>{line.amount ?? "\u00A0"}</div>)}</TableCell>
             <TableCell>{entry.creditLines.map((line)=><div>{line.account?.name?? "\u00A0"}</div>)}</TableCell>

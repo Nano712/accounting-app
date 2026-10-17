@@ -14,6 +14,7 @@ import type { AccountTitle } from "@/data/AccountTitle"
 import { AccountCombobox } from "@/components/CommandManyItems"
 import type { JournalEntry, JournalLine } from "@/data/JournalEntry"
 import { getBalanceBefore } from "@/utils/getBalanceBefore"
+import { filterEntriesByMonth } from "@/utils/filterEntriesByMonth"
 
 type LedgerRow = {
   side: "debit" | "credit"
@@ -55,12 +56,7 @@ export const Ledger = () => {
   const journalEntriesByYear = useJournalStore((state) => state.journalEntriesByYear)
   const journalEntries = journalEntriesByYear[fiscalYear] ?? []
 
-  const filteredEntries =
-    (selectedMonth === null
-      ? journalEntries
-      : journalEntries.filter(
-          (entry) => entry.date.getMonth() + 1 === selectedMonth
-        )).toSorted((a, b) => a.date.getTime() - b.date.getTime())
+  const filteredEntries= filterEntriesByMonth(journalEntries,selectedMonth).toSorted((a, b) => a.date.getTime() - b.date.getTime())
 
   // 科目が未選択のときは、空配列
   const ledgerRows = accountTitle
@@ -139,7 +135,10 @@ export const Ledger = () => {
 
           {ledgerRows.map(({ entry, row },index) => (
             <TableRow key={entry.id}>
-              <TableCell>{entry.date.toLocaleDateString()}</TableCell>
+              <TableCell>{entry.date.toLocaleDateString("ja-JP", {
+  month: "numeric",
+  day: "numeric",
+})}</TableCell>
               <TableCell>{entry.id}</TableCell>
               <TableCell>{row.counterAccount}</TableCell>
               <TableCell>{row.side === "debit" ? row.amount : ""}</TableCell>
