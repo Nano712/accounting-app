@@ -14,18 +14,32 @@ type JournalStore = {
 const STORAGE_KEY = "journalEntriesByYear"
 
 
+const isValidEntry = (e: unknown): e is JournalEntry => {
+  if (typeof e !== "object" || e === null) return false
+  const x = e as Record<string, unknown>
+  return (
+    typeof x.id === "number" &&
+    !Number.isNaN(new Date(x.date as string).getTime()) &&
+    Array.isArray(x.debitLines) &&
+    Array.isArray(x.creditLines)
+  )
+}
+
 const loadFromStorage = (): Record<number, JournalEntry[]> => {
-  const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}")
-  const result: Record<number, JournalEntry[]> = {}
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}")
+    const result: Record<number, JournalEntry[]> = {}
 
-  for (const year in raw) {
-    result[Number(year)] = raw[year].map((entry: JournalEntry) => ({
-      ...entry,
-      date: new Date(entry.date),
-    }))
+    for (const year in raw) {
+      if (!Array.isArray(raw[year])) continue
+      result[Number(year)] = raw[year]
+        .filter(isValidEntry)
+        .map((entry: JournalEntry) => ({ ...entry, date: new Date(entry.date) }))
+    }
+    return result
+  } catch {
+    return {}  
   }
-
-  return result
 }
 
 const saveAndReturn = (newData: Record<number, JournalEntry[]>) => {

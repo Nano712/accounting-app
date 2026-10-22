@@ -20,7 +20,7 @@ export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateIn
   const fiscalYear = useYearStore((state)=>state.fiscalYear);
   const startMonth = useYearStore((state)=>state.startMonth);
   const isTypingRef = useRef(false)
-// 日付の10の桁の入力に必要
+// 日付の10の位の入力に必要
 useEffect(() => {
   if (isTypingRef.current) return 
    setInputValue(value ? format(value, "MM/dd") : "")
@@ -46,7 +46,6 @@ useEffect(() => {
     const parsed = parse(`${fiscalYear}/${inputValue}`, "yyyy/MM/dd", new Date())
     if (!isValid(parsed) && inputValue !== "") {
       onErrorChange(true)
-      console.log(parsed)
     }
   }
 

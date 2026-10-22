@@ -25,7 +25,7 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
   : (<Input className="rounded-none" readOnly />)}
   
  <AccountCombobox
-      value={row.debitAccount?.code}
+  value={row.debitAccount?.code}
   onValueChange={(account) => onUpdate({ debitAccount: account })}
   showPlaceholder={isFirstRow}
   clearable
@@ -34,9 +34,16 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
 />
 
   <AmountInput className="rounded-none" 
-  value={row.debitAmount === 0 ? "" : row.debitAmount} onChange={(e) => onUpdate({ debitAmount: Number(e.target.value) })}/>
+  value={row.debitAmount === 0 ? "" : row.debitAmount} onChange={(e) => onUpdate({ debitAmount: Number(e.target.value) })}
+  onBlur={() => {
+  const truncated = Math.trunc(row.debitAmount)
+  if (truncated !== row.debitAmount) onUpdate({ debitAmount: truncated })
+  }}
+  />
 
      <AccountCombobox
+  value={row.creditAccount?.code}
+  onValueChange={(account) => onUpdate({ creditAccount: account })}
   showPlaceholder={isFirstRow}
   clearable
   showChevron={false}
@@ -44,17 +51,23 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
 />
 
       <AmountInput className="rounded-none" 
-      value={row.creditAmount === 0 ? "" : row.creditAmount} onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}/>
+      value={row.creditAmount === 0 ? "" : row.creditAmount} onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}
+      onBlur={() => {
+      const truncated = Math.trunc(row.creditAmount)
+     if (truncated !== row.creditAmount) onUpdate({ creditAmount: truncated })
+}}
+      />
 
     {isFirstRow ? (<Input className="col-span-2 rounded-none" 
       value={description} onChange={(e) => setDescription(e.target.value)}/> ) 
   : (<Input readOnly className="col-span-2 rounded-none"/>)}
 
+  {/* 二行目 */}
       {isFirstRow ? (<Input readOnly value={id ? id : "" } className="text-right rounded-none"/>):(<Input className="rounded-none" readOnly />)}
 
       <Input className="rounded-none" 
       value={row.debitSubAccount}
-      onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}
+      onChange={(e) => onUpdate({ debitSubAccount:e.target.value })}
       />
 
       <AmountInput className="rounded-none" readOnly/>
