@@ -1,4 +1,6 @@
 import * as React from "react"
+import { ChevronDown } from "lucide-react"
+import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -19,7 +21,6 @@ import {
 } from "@/data/AccountTitle"
 import type { AccountTitle } from "@/data/AccountTitle"
 
-
 const categoryGroups = [
   { label: "資産", items: assetAccounts },
   { label: "負債", items: liabilityAccounts },
@@ -31,30 +32,60 @@ const categoryGroups = [
 type AccountComboboxProps = {
   value?: string
   onValueChange: (account: AccountTitle | null) => void
-  isFirstRow?: boolean
+  showPlaceholder?: boolean
+  /** 選択済みのクリックで選択を解除する(仕訳入力用) */
+  clearable?: boolean
+  /** 右端に矢印を表示する(単体の部品として使うとき) */
+  showChevron?: boolean
+  className?: string
 }
 
-export function AccountCombobox({ value, onValueChange,isFirstRow }: AccountComboboxProps) {
+export function AccountCombobox({
+  value,
+  onValueChange,
+  showPlaceholder = true,
+  clearable = false,
+  showChevron = true,
+  className,
+}: AccountComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const selected = accountTitles.find((a) => a.code === value)
 
-  return (
-    <div className="flex flex-col max-w-30 gap-2 ">
-      <Button 
-        onClick={() => {
-    if (selected) {
+  const handleClick = () => {
+    if (selected && clearable) {
       onValueChange(null)
     } else {
       setOpen(true)
     }
-  }}
+  }
+
+  return (
+    <div className="@container h-8 w-full min-w-0">
+      <Button
+        type="button"
         variant="outline"
-        className="w-full justify-start rounded-none"
+        onClick={handleClick}
+        title={selected ? `${selected.code} - ${selected.name}` : undefined}
+        className={cn(" w-full  justify-start cursor-pointer rounded-md", className)}
       >
-        {selected ? `${selected.code} - ${selected.name}` : isFirstRow?"勘定科目を選択":""}
+        {selected ? (
+          <>
+            <span className="hidden @[100px]:inline">{selected.code} - </span>
+            <span className="min-w-0 truncate">{selected.name}</span>
+          </>
+        ) : (
+          showPlaceholder && (
+            <span className="min-w-0 truncate text-muted-foreground">
+              勘定科目を選択
+            </span>
+          )
+        )}
+        {showChevron && (
+          <ChevronDown className="ml-auto size-4 shrink-0 opacity-50" />
+        )}
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen} >
+      <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="コードまたは科目名で検索..." />
         <CommandList>
           <CommandEmpty>該当する科目がありません</CommandEmpty>
@@ -70,7 +101,7 @@ export function AccountCombobox({ value, onValueChange,isFirstRow }: AccountComb
                       setOpen(false)
                     }}
                   >
-                    <span className="text-muted-foreground w-10">
+                    <span className="w-10 text-muted-foreground">
                       {account.code}
                     </span>
                     <span>{account.name}</span>

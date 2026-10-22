@@ -58,7 +58,7 @@ useEffect(() => {
       onChange={handleChange}
       onBlur={handleBlur}
       placeholder={"MM/DD"}
-      className={cn("text-right rounded-none", isError && "border-3 border-red-500")}
+      className={cn(" rounded-none", isError && "border-3 border-red-500")}
     />
   )
 }

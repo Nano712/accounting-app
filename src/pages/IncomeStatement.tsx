@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react"
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table, TableBody, TableCell,TableRow,
 } from "@/components/ui/table"
 import {
  expenseAccounts, revenueAccounts, type AccountTitle,
@@ -11,6 +11,7 @@ import { useYearStore } from "@/store/useYearStore"
 import { sumLines } from "@/utils/sumLines"
 import { MonthFilter } from "@/components/MonthFilter"
 import { filterEntriesByMonth } from "@/utils/filterEntriesByMonth"
+import { SummaryTableHeader } from "@/components/SummaryTableHeader"
 
 const accountGroups = [
   { name: "収益", accounts: revenueAccounts },
@@ -19,23 +20,12 @@ const accountGroups = [
 
 type TrialBalanceRowProps = {
   account: AccountTitle
-  journalEntries: JournalEntry[]
+  filteredEntries: JournalEntry[]
 }
 
-
-
-export const IncomeStatement = () => {
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
-  const fiscalYear = useYearStore((state) => state.fiscalYear)
-  const journalEntriesByYear = useJournalStore((state) => state.journalEntriesByYear)
-  const journalEntries = journalEntriesByYear[fiscalYear] ?? []
-
-    
-
-  const AccountSummaryRow = ({ account,  journalEntries }: TrialBalanceRowProps) => {
+  const AccountSummaryRow = ({ account,  filteredEntries }: TrialBalanceRowProps) => {
     
         const isDebitNormal = account.category === "expense"
-        const filteredEntries= filterEntriesByMonth(journalEntries,selectedMonth)
 
         const filteredDebit = filteredEntries.reduce((s, e) => s + sumLines(e.debitLines, account.code), 0)
         const filteredCredit  = filteredEntries.reduce((s, e) => s + sumLines(e.creditLines, account.code), 0)
@@ -43,42 +33,50 @@ export const IncomeStatement = () => {
   return (
     <TableRow>
       <TableCell>{account.code} {account.name}</TableCell>
-          <TableCell>
-            {filteredDebit}
+          <TableCell className="text-right">
+            {filteredDebit.toLocaleString("ja-JP")}
           </TableCell>
-          <TableCell>
-            {filteredCredit}
+          <TableCell className="text-right">
+            {filteredCredit.toLocaleString("ja-JP")}
           </TableCell>
-          <TableCell>
-            {isDebitNormal ? filteredDebit - filteredCredit : filteredCredit - filteredDebit}
+          <TableCell className="text-right">
+            {isDebitNormal ? (filteredDebit - filteredCredit).toLocaleString("ja-JP") : (filteredCredit - filteredDebit).toLocaleString("ja-JP")}
           </TableCell>
 
     </TableRow>
   )
 }
 
+
+export const IncomeStatement = () => {
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
+  const fiscalYear = useYearStore((state) => state.fiscalYear)
+  const journalEntriesByYear = useJournalStore((state) => state.journalEntriesByYear)
+  const journalEntries = journalEntriesByYear[fiscalYear] ?? []
+  const filteredEntries= filterEntriesByMonth(journalEntries,selectedMonth)
+
   return (
     <>
+    <div className="mb-4 space-y-3">
+      <span className="mb-1 block text-xs text-muted-foreground">期間</span>
     <MonthFilter
             selectedMonth={selectedMonth}
             onMonthChange={setSelectedMonth}
           />
-    <Table>
-      <TableHeader>
-        <TableRow>
-            <TableHead>勘定科目</TableHead>
-            <TableHead>期間借方</TableHead>
-            <TableHead>期間貸方</TableHead>
-            <TableHead>期間残高</TableHead>
-        </TableRow>
-      </TableHeader>
+    </div>
+
+    <div className="max-h-[70dvh] overflow-auto rounded-md border max-w-5xl">
+    <Table className="table-fixed">
+      <SummaryTableHeader />
 
       <TableBody>
         {accountGroups.map((group) => (
           <Fragment key={group.name}>
-            <TableRow>
-              <TableCell className="font-bold">
-                {group.name}
+            <TableRow className="bg-muted hover:bg-muted">
+              <TableCell colSpan={4} className="font-bold bg-muted">
+                <span className="sticky left-2 font-bold">
+                 {group.name}
+                </span>
               </TableCell>
             </TableRow>
 
@@ -86,13 +84,14 @@ export const IncomeStatement = () => {
               <AccountSummaryRow
                 key={account.id}
                 account={account}
-                journalEntries={journalEntries}
+                filteredEntries={filteredEntries}
               />
             ))}
           </Fragment>
         ))}
       </TableBody>
     </Table>
+    </div>
     </>
   )
 }

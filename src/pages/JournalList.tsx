@@ -40,44 +40,52 @@ const handleEdit = (id: number) => {
 
     return(
         <>
+        <div className="mb-4">
+      <span className="mb-1 block text-xs text-muted-foreground">期間</span>
       <MonthFilter
         selectedMonth={selectedMonth}
         onMonthChange={setSelectedMonth}
       />
+        </div>
 
-        <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>仕訳No</TableHead>
-          <TableHead>日付</TableHead>
-          <TableHead>借方</TableHead>
-          <TableHead>借方金額</TableHead>
-          <TableHead>貸方</TableHead>
-          <TableHead>貸方金額</TableHead>
-          <TableHead>摘要</TableHead>
-          <TableHead>操作</TableHead>
+      <div className="max-h-[70dvh] overflow-auto rounded-md border  max-w-5xl">
+        <Table className="table-fixed w-full">
+      <TableHeader >
+        <TableRow className="bg-gray-300 hover:bg-gray-300">
+          <TableHead className="hidden w-16 text-center lg:table-cell">仕訳No</TableHead>
+          <TableHead className="w-14 text-center">日付</TableHead>
+          <TableHead className="w-28 text-center">借方</TableHead>
+          <TableHead className="w-28 text-center">借方金額</TableHead>
+          <TableHead className="w-28 text-center">貸方</TableHead>
+          <TableHead className="w-28 text-center">貸方金額</TableHead>
+          <TableHead className="hidden text-center md:table-cell">摘要</TableHead>
+          <TableHead className="hidden w-20 text-center md:table-cell">操作</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {filteredEntries.map((entry) => (
           <TableRow key={entry.id} className="text-center">
-            <TableCell className="align-top">{entry.id}</TableCell>
-            <TableCell className="align-top">{entry.date.toLocaleDateString("ja-JP", {
+            <TableCell className="hidden  lg:table-cell">{entry.id}</TableCell>
+            <TableCell >{entry.date.toLocaleDateString("ja-JP", {
   month: "numeric",
   day: "numeric",
 })}</TableCell>
-            <TableCell>{entry.debitLines.map((line)=><div>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.debitLines.map((line)=><div>{line.amount ?? "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.creditLines.map((line)=><div>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.creditLines.map((line)=><div>{line.account ? line.amount : "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.description}</TableCell>
-            <Button variant="outline" onClick={()=>handleEdit(entry.id)}>編集</Button>
+            <TableCell>{entry.debitLines.map((line, index)=><div key={index}>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
+            <TableCell>{entry.debitLines.map((line, index)=><div key={index}>{line.amount.toLocaleString("ja-JP") ?? "\u00A0"}</div>)}</TableCell>
+            <TableCell>{entry.creditLines.map((line, index)=><div key={index}>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
+            <TableCell>{entry.creditLines.map((line, index)=><div key={index}>{line.account ? line.amount.toLocaleString("ja-JP") : "\u00A0"}</div>)}</TableCell>
+            <TableCell className="hidden md:table-cell">{entry.description}</TableCell>
+            <TableCell className="hidden md:table-cell">
+              <Button className="cursor-pointer" variant="outline" onClick={()=>handleEdit(entry.id)}>
+                編集</Button>
+            </TableCell>
             
           
           </TableRow>
         ))}
       </TableBody>
     </Table>
+    </div>
     </>
     )};

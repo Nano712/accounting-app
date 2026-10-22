@@ -6,9 +6,13 @@ type JournalStore = {
   addEntry: (year: number, entry: Omit<JournalEntry, "id">) => void
   updateEntry: (year: number, id: number, updatedEntry: JournalEntry) => void
   deleteEntry: (year: number, id: number) => void
+  replaceAllEntries: (
+  entries: Record<number, JournalEntry[]>,
+) => void;
 }
 
 const STORAGE_KEY = "journalEntriesByYear"
+
 
 const loadFromStorage = (): Record<number, JournalEntry[]> => {
   const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}")
@@ -30,6 +34,9 @@ const saveAndReturn = (newData: Record<number, JournalEntry[]>) => {
 }
 
 export const useJournalStore = create<JournalStore>((set) => ({
+  replaceAllEntries: (entries) =>
+  set(() => saveAndReturn(entries)),
+  
   journalEntriesByYear: loadFromStorage(),
 // 保存処理
   addEntry: (year, entry) =>

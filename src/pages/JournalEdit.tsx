@@ -145,7 +145,7 @@ const handleDelete = (id: number) => {
 
     return(
         <>
-        <div className="grid grid-cols-7 gap-2  p-2  bg-gray-300" >
+        <div className="grid grid-cols-7 gap-2  mt-3 p-2  bg-gray-300 max-w-5xl" >
   <Label>日付</Label>
   <Label>借方科目</Label>
   <Label>借方金額</Label>

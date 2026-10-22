@@ -27,7 +27,6 @@ const navItems = [
   { to: "/pl", label: "損益計算書（P/L）" },
   { to: "/bs", label: "貸借対照表（B/S）" },
   { to: "/settings", label: "設定" },
-  { to: "/debug", label: "デバッグ" },
 ]
 
 
@@ -85,7 +84,15 @@ const endMonth = startMonth === 1 ? 12 : startMonth - 1
     ))}
   </SelectContent>
 </Select>
-<span>会計期間：{fiscalYear}年{startMonth}月 ～ {endYear}年{endMonth}月</span>
+<div  className="@container w-full min-w-0 flex-1">
+  <span className="hidden @[300px]:inline">
+    会計期間：{fiscalYear}年{startMonth}月 ～ {endYear}年{endMonth}月
+  </span>
+  <span className="@[300px]:hidden text-sm">
+    {fiscalYear}/{String(startMonth).padStart(2, "0")} ～ {endYear}/{String(endMonth).padStart(2, "0")}
+  </span>
+</div>
+
 
 
         </header>

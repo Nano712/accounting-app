@@ -10,7 +10,6 @@ import { buildJournalEntry } from "@/utils/buildJournalEntry";
 import { toast } from "sonner"
 
 export const Journal=() => { 
-  
 
   const {
   date, setDate,
@@ -65,7 +64,7 @@ setDate(undefined)
 
     return(
         <>
-        <div className="grid grid-cols-7 gap-2  p-2  bg-gray-300" >
+        <div className="grid max-w-5xl grid-cols-7 gap-2 my-3 p-2  bg-gray-300" >
   <Label>日付</Label>
   <Label>借方科目</Label>
   <Label>借方金額</Label>
@@ -92,7 +91,7 @@ setDate(undefined)
   />
 ))}
 <div>借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
-<Button onClick={handleClickSave}>保存</Button>
+<Button className="cursor-pointer" onClick={handleClickSave}>保存</Button>
        
         </>
     )};

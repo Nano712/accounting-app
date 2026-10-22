@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react"
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table, TableBody, TableCell, TableRow,
 } from "@/components/ui/table"
 import {
   assetAccounts,
@@ -15,6 +15,7 @@ import { sumLines } from "@/utils/sumLines"
 import { MonthFilter } from "@/components/MonthFilter"
 import { getBalanceBefore } from "@/utils/getBalanceBefore"
 import { filterEntriesByMonth } from "@/utils/filterEntriesByMonth"
+import { SummaryTableHeader } from "@/components/SummaryTableHeader"
 
 const accountGroups = [
   { name: "資産", accounts: assetAccounts },
@@ -52,16 +53,16 @@ const AccountSummaryRow = ({
         : periodCredit - periodDebit);
 
   return (
-    <TableRow>
+    <TableRow >
       <TableCell>{account.code} {account.name}</TableCell>
-          <TableCell>
-            {periodDebit}
+          <TableCell className="text-right">
+            {periodDebit.toLocaleString("ja-JP")}
           </TableCell>
-          <TableCell>
-            {periodCredit}
+          <TableCell className="text-right">
+            {periodCredit.toLocaleString("ja-JP")}
           </TableCell>
-          <TableCell>
-            {periodBalance}
+          <TableCell className="text-right pr-4">
+            {periodBalance.toLocaleString("ja-JP")}
           </TableCell>
 
     </TableRow>
@@ -81,26 +82,24 @@ export const BalanceSheet = () => {
 
   return (
     <>
+    <div className="mb-4 space-y-3">
+    <span className="mb-1 block text-xs text-muted-foreground">期間</span>
     <MonthFilter
             selectedMonth={selectedMonth}
             onMonthChange={setSelectedMonth}
           />
-    <Table>
-      <TableHeader>
-        <TableRow>
-            <TableHead>勘定科目</TableHead>
-            <TableHead>期間借方</TableHead>
-            <TableHead>期間貸方</TableHead>
-            <TableHead>期間残高</TableHead>
-        </TableRow>
-      </TableHeader>
+    </div>
+
+    <div className="max-h-[70dvh] overflow-auto rounded-md border  max-w-5xl">
+    <Table className="table-fixed w-full">
+      <SummaryTableHeader />
 
       <TableBody>
         {accountGroups.map((group) => (
           <Fragment key={group.name}>
-            <TableRow>
-              <TableCell className="font-bold">
-                {group.name}
+            <TableRow className="bg-muted hover:bg-muted">
+              <TableCell colSpan={4} className="font-bold bg-muted">
+                <span>{group.name}</span>
               </TableCell>
             </TableRow>
 
@@ -118,6 +117,7 @@ export const BalanceSheet = () => {
         ))}
       </TableBody>
     </Table>
+    </div>
     </>
   )
 }

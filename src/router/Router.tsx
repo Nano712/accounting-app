@@ -1,16 +1,16 @@
 import { Route,Routes } from "react-router-dom";
 import { Layout } from "../components/Layout";
 import { Home } from "../pages/Home";
-import { Journal } from "../pages/Journal";
 import { JournalEdit } from "../pages/JournalEdit";
 import { JournalList } from "@/pages/JournalList";
 import { Ledger } from "../pages/Ledger";
 import { TrialBalance } from "../pages/TrialBalance";
 import { Settings } from "../pages/Settings";
 import { Page404 } from "../pages/Page404";
-import { Debug } from "@/pages/Debug";
 import { BalanceSheet } from "@/pages/BalanceSheet";
 import { IncomeStatement } from "@/pages/IncomeStatement";
+import { JournalRoute } from "@/pages/JournalRoute";
+import { QuickJournal } from "@/pages/QuickJournal";
 
 
 
@@ -20,8 +20,9 @@ return (
         <Route element={<Layout />}>
             <Route path="/" element={<Home/>} />
 
-        <Route path="/journal" element={<Journal />} />
+        <Route path="/journal" element={<JournalRoute />} />
         <Route path="/journal/edit/:id" element={<JournalEdit/>} />
+        <Route path="/journal/quick" element={<QuickJournal />} />
         
         <Route path="/journal/list" element={<JournalList/>}/>
         <Route path="/ledger" element={<Ledger/>} />
@@ -29,7 +30,6 @@ return (
         <Route path="/pl" element={<IncomeStatement/>} />
         <Route path="/bs" element={<BalanceSheet/>} />
         <Route path="/settings" element={<Settings/>} />
-        <Route path="/debug" element={<Debug/>} />
 
         </Route>
         <Route path="*" element={<Page404 />} />

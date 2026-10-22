@@ -27,12 +27,14 @@ type TrialBalanceRowProps = {
   journalEntries: JournalEntry[]
 }
 
-const TrialBalanceRow = ({ account, months, journalEntries }: TrialBalanceRowProps) => {
+const TrialBalanceRow = ({ account, months, journalEntries  }: TrialBalanceRowProps) => {
   const isDebitNormal = account.category === "asset" || account.category === "expense"
 
   return (
-    <TableRow>
-      <TableCell>{account.code} {account.name}</TableCell>
+    <TableRow className="group hover:bg-gray-50">
+      <TableCell className="sticky left-0 z-10 bg-background whitespace-nowrap transition-colors group-hover:bg-gray-50">
+        {account.code} {account.name}
+        </TableCell>
       {months.map((month) => {
         const monthly = journalEntries.filter(
           (entry) => entry.date.getMonth() + 1 === month
@@ -42,8 +44,8 @@ const TrialBalanceRow = ({ account, months, journalEntries }: TrialBalanceRowPro
 
         return (
           
-          <TableCell key={month}>
-            {isDebitNormal ? debit - credit : credit - debit}
+          <TableCell key={month}  className="text-right last:pr-4">
+            {isDebitNormal ? (debit - credit).toLocaleString("ja-JP") : (credit - debit).toLocaleString("ja-JP") }
           </TableCell>
         )
       })}
@@ -60,12 +62,15 @@ export const TrialBalance = () => {
   const months = Array.from({ length: 12 }, (_, i) => ((startMonth - 1 + i) % 12) + 1)
 
   return (
-    <Table>
+    <div className="@container max-h-[70dvh] overflow-auto rounded-md border ">
+    <Table >
       <TableHeader>
-        <TableRow>
-          <TableHead>勘定科目</TableHead>
+        <TableRow className="bg-gray-300 hover:bg-gray-300">
+          <TableHead className="sticky top-0 left-0 z-30  whitespace-nowrap bg-gray-300">勘定科目</TableHead>
           {months.map((month) => (
-            <TableHead key={month}>{month}月度</TableHead>
+            <TableHead key={month} className="sticky top-0 z-10 whitespace-nowrap bg-gray-300 group-hover:bg-gray-300">
+              {month}月度
+              </TableHead>
           ))}
         </TableRow>
       </TableHeader>
@@ -73,9 +78,11 @@ export const TrialBalance = () => {
       <TableBody>
         {accountGroups.map((group) => (
           <Fragment key={group.name}>
-            <TableRow>
-              <TableCell colSpan={months.length + 1} className="font-bold">
-                {group.name}
+            <TableRow className="bg-muted hover:bg-muted">
+              <TableCell colSpan={months.length + 1} className="bg-muted">
+                <span className="sticky left-2 font-bold">
+                  {group.name}
+                </span>
               </TableCell>
             </TableRow>
 
@@ -91,5 +98,6 @@ export const TrialBalance = () => {
         ))}
       </TableBody>
     </Table>
+    </div>
   )
 }

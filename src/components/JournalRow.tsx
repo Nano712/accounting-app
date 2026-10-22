@@ -20,19 +20,28 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
 
   return(
     <>
-<div className="grid grid-cols-7 gap-1 p-2 ">
+<div className="grid grid-cols-7 mt-2 px-1 max-w-5xl">
   {isFirstRow ? (<DateInput key={id ?? "new"} value={date} onValueChange={setDate} isError={dateError} onErrorChange={setDateError} /> ) 
   : (<Input className="rounded-none" readOnly />)}
   
  <AccountCombobox
       value={row.debitAccount?.code}
-      onValueChange={(account) => onUpdate({ debitAccount: account })} />
+  onValueChange={(account) => onUpdate({ debitAccount: account })}
+  showPlaceholder={isFirstRow}
+  clearable
+  showChevron={false}
+  className="rounded-none"
+/>
 
   <AmountInput className="rounded-none" 
   value={row.debitAmount === 0 ? "" : row.debitAmount} onChange={(e) => onUpdate({ debitAmount: Number(e.target.value) })}/>
 
      <AccountCombobox
-      value={row.creditAccount?.code} onValueChange={(account) => onUpdate({ creditAccount: account })} />
+  showPlaceholder={isFirstRow}
+  clearable
+  showChevron={false}
+  className="rounded-none"
+/>
 
       <AmountInput className="rounded-none" 
       value={row.creditAmount === 0 ? "" : row.creditAmount} onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}/>
