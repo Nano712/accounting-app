@@ -14,6 +14,7 @@ import { QuickJournal } from "@/pages/QuickJournal";
 
 
 
+
 export const Router =()=> {
 return (
     <Routes>

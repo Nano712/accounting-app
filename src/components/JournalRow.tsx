@@ -1,9 +1,9 @@
 import type { FormRow } from "@/hooks/useJournalForm"
 import { DateInput } from "./DateInput"
-import { AccountCombobox } from "./CommandManyItems"
-import { AmountInput } from "./ui/AmountInput"
+import { AccountCombobox } from "./AccountCombobox"
+import { AmountInput } from "./AmountInput"
 import { Input } from "./ui/input"
-import type { JournalFormState } from "@/data/JournalFormState "
+import type { JournalFormState } from "@/data/JournalFormState"
 
 
 type JournalRowProps = {
@@ -34,7 +34,8 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
 />
 
   <AmountInput className="rounded-none" 
-  value={row.debitAmount === 0 ? "" : row.debitAmount} onChange={(e) => onUpdate({ debitAmount: Number(e.target.value) })}
+  value={row.debitAmount === 0 ? "" : row.debitAmount} 
+  onChange={(e) => onUpdate({ debitAmount: Number(e.target.value) })}
   onBlur={() => {
   const truncated = Math.trunc(row.debitAmount)
   if (truncated !== row.debitAmount) onUpdate({ debitAmount: truncated })
@@ -51,7 +52,8 @@ export const JournalRow = ({ isFirstRow, row, onUpdate, formState , id }: Journa
 />
 
       <AmountInput className="rounded-none" 
-      value={row.creditAmount === 0 ? "" : row.creditAmount} onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}
+      value={row.creditAmount === 0 ? "" : row.creditAmount} 
+      onChange={(e) => onUpdate({ creditAmount: Number(e.target.value) })}
       onBlur={() => {
       const truncated = Math.trunc(row.creditAmount)
      if (truncated !== row.creditAmount) onUpdate({ creditAmount: truncated })

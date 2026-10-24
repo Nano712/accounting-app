@@ -9,8 +9,6 @@ type JournalValidationProps = {
   totalCredit: number
 }
 
-
-
 export function useJournalValidation({
   date,
   dateError,
@@ -35,57 +33,27 @@ export function useJournalValidation({
   [r.debitAmount, r.creditAmount].some((n) => !Number.isInteger(n))
 )
 
-
   const validate = () => {
-    if (!date) {
-      toast.error("日付を入力してください", {
+    const checks = [
+  { failed: !date,  message: "日付を入力してください" }, 
+  { failed: dateError, message: "不明な日付です" },
+  { failed: hasInvalidAmount,  message: "金額は整数で入力してください" },
+  { failed: totalDebit === 0 || totalCredit === 0,  message: "借方・貸方をそれぞれ入力してください" },
+  { failed: hasAmountError,  message: "金額に未入力の欄があります" },
+  { failed: hasAccountError,  message: "科目に未入力の欄があります" },
+  { failed: totalDebit !== totalCredit,  message: "借方と貸方の金額が一致していません" },
+]
+    const firstError = checks.find((c) => c.failed)
+    const showError = (message:string)=>{
+   toast.error(message, {
         className: "!bg-red-500 !text-white",
       })
-      return false
-    }
+}
 
-    if (dateError) {
-      toast.error("不明な日付です", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
+    if(firstError){
+    showError(firstError.message)
+    return false
     }
-
-    if (hasInvalidAmount) {
-      toast.error("金額欄に不明な文字が存在します", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
-    }
-
-    if (totalDebit === 0 || totalCredit === 0) {
-      toast.error("借方・貸方をそれぞれ入力してください", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
-    }
-
-    if (hasAmountError) {
-      toast.error("金額に未入力の欄があります", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
-    }
-
-    if (hasAccountError) {
-      toast.error("科目に未入力の欄があります", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
-    }
-
-    if (totalDebit !== totalCredit) {
-      toast.error("借方と貸方の金額が一致していません", {
-        className: "!bg-red-500 !text-white",
-      })
-      return false
-    }
-
     return true
   }
 

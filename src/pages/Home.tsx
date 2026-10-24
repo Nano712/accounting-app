@@ -32,7 +32,7 @@ export const Home =() => {
             <CardTitle>当期収益合計</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-2xl font-bold">¥{revenue}</p>
+            <p className="text-2xl font-bold">¥{revenue.toLocaleString("ja-JP")}</p>
             </CardContent>
         </Card>
 
@@ -41,7 +41,7 @@ export const Home =() => {
             <CardTitle>当期費用合計</CardTitle>
             </CardHeader>
             <CardContent>
-            <p className="text-2xl font-bold">¥{expense}</p>
+            <p className="text-2xl font-bold">¥{expense.toLocaleString("ja-JP")}</p>
             </CardContent>
         </Card>
 
@@ -51,8 +51,8 @@ export const Home =() => {
             </CardHeader>
             <CardContent>
             <p  className={`text-2xl font-bold ${
-        expense >= revenue ? "text-red-500" : "text-green-500"
-      }`}>¥{revenue - expense}</p>
+        expense > revenue ? "text-red-500" : "text-green-500"
+      }`}>¥{(revenue - expense).toLocaleString("ja-JP")}</p>
             </CardContent>
         </Card>
     </div>

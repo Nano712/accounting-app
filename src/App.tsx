@@ -7,7 +7,7 @@ export const App = ()=> {
   return(
     <>
     <Router/>
-    <Toaster position="top-right"/>
+    <Toaster position="top-right" theme="light"/>
     </>
   
 )

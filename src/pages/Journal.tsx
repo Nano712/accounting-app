@@ -1,7 +1,7 @@
 import { JournalRow } from "@/components/JournalRow";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import type { JournalFormState } from "@/data/JournalFormState ";
+import type { JournalFormState } from "@/data/JournalFormState";
 import { useJournalForm } from "@/hooks/useJournalForm";
 import { useJournalValidation } from "@/hooks/useJournalValidation";
 import { useJournalStore } from "@/store/useJournalStore";

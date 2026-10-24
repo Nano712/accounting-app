@@ -29,8 +29,6 @@ const navItems = [
   { to: "/settings", label: "設定" },
 ]
 
-
-
 const availableYears = [
   2025,
   2026,

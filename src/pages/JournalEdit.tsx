@@ -1,7 +1,7 @@
 import { JournalRow } from "@/components/JournalRow";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import type { JournalFormState } from "@/data/JournalFormState ";
+import type { JournalFormState } from "@/data/JournalFormState";
 import { useJournalForm, type FormRow } from "@/hooks/useJournalForm";
 import { useJournalValidation } from "@/hooks/useJournalValidation";
 import { useJournalStore } from "@/store/useJournalStore";
@@ -53,6 +53,16 @@ const updateEntry = useJournalStore((state) => state.updateEntry)
 
 const { id } = useParams()
 
+// バリデーションと保存
+ const validation = useJournalValidation({
+    date,
+    dateError,
+    rows,
+    totalDebit,
+    totalCredit,
+  })
+
+
 if (!id) {
   toast.error("仕訳IDを取得できませんでした", {
         className: "!bg-red-500 !text-white",
@@ -71,9 +81,9 @@ const entry = journalEntries.find(
   (entry) => entry.id === journalId
 )
 
+
 useEffect(() => {
   if (!entry) return
-
 
   setDate(entry.date)
   setDescription(entry.description ?? "")
@@ -91,6 +101,8 @@ useEffect(() => {
     }
   })
 
+
+
   while (formRows.length < 5) {
   formRows.push({ ...emptyRow })
 }
@@ -99,16 +111,7 @@ useEffect(() => {
 }, [entry])
 
 if (!entry) {
-  return <p>仕訳が見つかりません。</p>;}
-
-// バリデーションと保存
- const validation = useJournalValidation({
-    date,
-    dateError,
-    rows,
-    totalDebit,
-    totalCredit,
-  })
+  return <p className=" font-bold tracking-tight text-muted-foreground">指定された仕訳Noが見つかりませんでした。</p>;}
 
 
 const handleClickSave = () => {

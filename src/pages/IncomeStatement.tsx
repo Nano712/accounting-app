@@ -66,7 +66,7 @@ export const IncomeStatement = () => {
     </div>
 
     <div className="max-h-[70dvh] overflow-auto rounded-md border max-w-5xl">
-    <Table className="table-fixed">
+    <Table className="table-fixed w-full">
       <SummaryTableHeader />
 
       <TableBody>

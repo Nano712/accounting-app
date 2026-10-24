@@ -12,7 +12,7 @@ export const assetAccounts: AccountTitle[] = [
 ];
 
 export const liabilityAccounts: AccountTitle[] = [
-  { id: 4, code: "401", name: "買掛金", category: "liability" },
+  { id: 4, code: "440", name: "買掛金", category: "liability" },
 ];
 
 export const equityAccounts: AccountTitle[] = [

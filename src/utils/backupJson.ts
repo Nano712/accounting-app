@@ -69,7 +69,7 @@ const isValidJournalLine = (
     validAccount &&
     validSubAccount &&
     typeof value.amount === "number" &&
-    Number.isFinite(value.amount)
+    Number.isInteger(value.amount)
   );
 };
 

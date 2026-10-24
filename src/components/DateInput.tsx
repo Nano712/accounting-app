@@ -12,6 +12,8 @@ type DateInputProps = {
 }
 
 
+
+
 export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateInputProps) {
   const [inputValue, setInputValue] = useState(
     value ? format(value, "MM/dd") : ""
@@ -20,6 +22,14 @@ export function DateInput({ value, onValueChange,isError,onErrorChange,}: DateIn
   const fiscalYear = useYearStore((state)=>state.fiscalYear);
   const startMonth = useYearStore((state)=>state.startMonth);
   const isTypingRef = useRef(false)
+
+//年度の計算に必要 
+  const getCalendar = (text: string) => {
+  const month = Number(text.split("/")[0])
+  return month < startMonth ? fiscalYear + 1 : fiscalYear
+}
+
+
 // 日付の10の位の入力に必要
 useEffect(() => {
   if (isTypingRef.current) return 
@@ -32,18 +42,16 @@ useEffect(() => {
     setInputValue(text)
     onErrorChange(false)
 
-    const [inputMonth] = text.split("/")
-  const month = Number(inputMonth)
-  const year = month < startMonth ? fiscalYear + 1 : fiscalYear
 
-   const parsed = parse(`${year}/${text}`, "yyyy/MM/dd", new Date())
+   const parsed = parse(`${getCalendar(text)}/${text}`, "yyyy/MM/dd", new Date())
   if (isValid(parsed)) {
     onValueChange(parsed)
     }}
 
      const handleBlur = () => {
       isTypingRef.current = false
-    const parsed = parse(`${fiscalYear}/${inputValue}`, "yyyy/MM/dd", new Date())
+
+    const parsed = parse(`${getCalendar(inputValue)}/${inputValue}`, "yyyy/MM/dd", new Date())
     if (!isValid(parsed) && inputValue !== "") {
       onErrorChange(true)
     }

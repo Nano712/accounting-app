@@ -28,7 +28,7 @@ export function useJournalForm() {
   const [rows, setRows] = useState<FormRow[]>(
     Array.from({ length: ROW_COUNT }, () => ({ ...emptyRow }))
   )
-
+// 
   const updateRow = (
     index: number,
     updated: Partial<FormRow>
