@@ -20,6 +20,7 @@ import {
   accountTitles,
 } from "@/data/AccountTitle"
 import type { AccountTitle } from "@/data/AccountTitle"
+import { focusNext } from "@/utils/focusNext"
 
 const categoryGroups = [
   { label: "資産", items: assetAccounts },
@@ -35,7 +36,7 @@ type AccountComboboxProps = {
   showPlaceholder?: boolean
   /** 選択済みのクリックで選択を解除する(仕訳入力用) */
   clearable?: boolean
-  /** 右端に矢印を表示する(単体の部品として使うとき) */
+  /** 右端に矢印を表示する(単体で使うとき) */
   showChevron?: boolean
   className?: string
 }
@@ -49,6 +50,7 @@ export function AccountCombobox({
   className,
 }: AccountComboboxProps) {
   const [open, setOpen] = React.useState(false)
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
   const selected = accountTitles.find((a) => a.code === value)
 
   const handleClick = () => {
@@ -59,9 +61,15 @@ export function AccountCombobox({
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  if (e.key === "Enter" ) e.stopPropagation()
+}
+
   return (
     <div className="@container h-8 w-full min-w-0">
       <Button
+        ref={buttonRef}
+        onKeyDown={handleKeyDown}
         type="button"
         variant="outline"
         onClick={handleClick}
@@ -99,6 +107,9 @@ export function AccountCombobox({
                     onSelect={() => {
                       onValueChange(account)
                       setOpen(false)
+                      setTimeout(() => {
+                        if (buttonRef.current) focusNext(buttonRef.current)
+                      }, 0)
                     }}
                   >
                     <span className="w-10 text-muted-foreground">

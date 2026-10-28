@@ -22,6 +22,7 @@ import {
 
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react";
+import { focusNext } from "@/utils/focusNext";
 
 export const JournalEdit=() => {
      const {
@@ -145,6 +146,23 @@ const handleDelete = (id: number) => {
   navigate("/journal/list")
 };
 
+//項目送り
+const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const target = e.target as HTMLElement
+  if (!target.closest("[data-journal-form]")) return
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+    e.preventDefault()
+    handleClickSave()
+    return
+  }
+
+  if (e.key !== "Enter" || e.nativeEvent.isComposing) return
+
+  e.preventDefault()
+  focusNext(target)
+}
+
 
     return(
         <>
@@ -166,6 +184,7 @@ const handleDelete = (id: number) => {
 {!entry
  &&<p>仕訳が見つかりません。</p>}
 
+  <div data-journal-form onKeyDown={handleKeyDown}>
 
   {rows.map((row, index) => (
   <JournalRow
@@ -179,13 +198,14 @@ const handleDelete = (id: number) => {
     
   />
 ))}
-<div>借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
+ </div>
+<div className="mt-2">借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
 
 
-<Button onClick={handleClickSave} className={"cursor-pointer"}>保存</Button>
+<div className="mt-3 flex max-w-5xl items-center justify-between">
   <AlertDialog>
   <AlertDialogTrigger >
-    <Button variant="destructive" className={"cursor-pointer"}>
+    <Button variant="destructive" className={"cursor-pointer "}>
       削除
     </Button>
   </AlertDialogTrigger>
@@ -215,6 +235,14 @@ const handleDelete = (id: number) => {
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
+
+<div className="flex items-center gap-2">
+    <span className="text-sm text-muted-foreground">(Ctrl / Cmd + S)</span>
+    <Button className="cursor-pointer" onClick={handleClickSave}>
+      保存
+    </Button>
+  </div>
+</div>
        
         </>
     )};

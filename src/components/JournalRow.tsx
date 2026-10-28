@@ -6,6 +6,8 @@ import { Input } from "./ui/input"
 import type { JournalFormState } from "@/data/JournalFormState"
 
 
+
+
 type JournalRowProps = {
   isFirstRow: boolean
   index: number

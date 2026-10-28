@@ -7,6 +7,7 @@ import { useJournalValidation } from "@/hooks/useJournalValidation";
 import { useJournalStore } from "@/store/useJournalStore";
 import { useYearStore } from "@/store/useYearStore";
 import { buildJournalEntry } from "@/utils/buildJournalEntry";
+import { focusNext } from "@/utils/focusNext";
 import { toast } from "sonner"
 
 export const Journal=() => { 
@@ -32,6 +33,7 @@ export const Journal=() => {
     totalDebit,
     totalCredit,
   })
+
 
   const fiscalYear = useYearStore((state) => state.fiscalYear)
   const addEntry = useJournalStore((state) => state.addEntry)
@@ -61,6 +63,21 @@ setDate(undefined)
   
 }
 
+const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const target = e.target as HTMLElement
+  if (!target.closest("[data-journal-form]")) return
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+    e.preventDefault()
+    handleClickSave()
+    return
+  }
+
+  if (e.key !== "Enter" || e.nativeEvent.isComposing) return
+
+  e.preventDefault()
+  focusNext(target)
+}
 
     return(
         <>
@@ -79,19 +96,25 @@ setDate(undefined)
   <Label>消費税額</Label>
 </div>
 
-  {rows.map((row, index) => (
-  <JournalRow
-    key={index}
-    isFirstRow={index === 0}
-    index={index}
-    row={row}
-    onUpdate={(updated) => updateRow(index, updated)}
-    formState={formState}
-    
-  />
-))}
-<div>借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
-<Button className="cursor-pointer" onClick={handleClickSave}>保存</Button>
+
+  <div data-journal-form onKeyDown={handleKeyDown}>
+    {rows.map((row, index) => (
+      <JournalRow
+        key={index}
+        isFirstRow={index === 0}
+        index={index}
+        row={row}
+        onUpdate={(updated) => updateRow(index, updated)}
+        formState={formState}
+        
+      />
+  ))}
+</div>
+<div className="mt-2">借方合計: {totalDebit} / 貸方合計: {totalCredit}</div>
+<div className="mt-3 flex max-w-5xl items-center justify-end gap-2">
+  <span className="text-sm text-muted-foreground">(Ctrl / Cmd + S)</span>
+  <Button className="cursor-pointer" onClick={handleClickSave}>保存</Button>
+</div>
        
         </>
     )};
