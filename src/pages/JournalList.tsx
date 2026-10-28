@@ -72,9 +72,9 @@ const handleEdit = (id: number) => {
   day: "numeric",
 })}</TableCell>
             <TableCell>{entry.debitLines.map((line, index)=><div key={index}>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.debitLines.map((line, index)=><div key={index}>{line.account ? line.amount.toLocaleString("ja-JP") : "\u00A0"}</div>)}</TableCell>
+            <TableCell className="text-right">{entry.debitLines.map((line, index)=><div key={index}>{line.account ? line.amount.toLocaleString("ja-JP") : "\u00A0"}</div>)}</TableCell>
             <TableCell>{entry.creditLines.map((line, index)=><div key={index}>{line.account?.name?? "\u00A0"}</div>)}</TableCell>
-            <TableCell>{entry.creditLines.map((line, index)=><div key={index}>{line.account ? line.amount.toLocaleString("ja-JP") : "\u00A0"}</div>)}</TableCell>
+            <TableCell className="text-right">{entry.creditLines.map((line, index)=><div key={index}>{line.account ? line.amount.toLocaleString("ja-JP") : "\u00A0"}</div>)}</TableCell>
             <TableCell className="hidden @3xl:table-cell">{entry.description}</TableCell>
             <TableCell className="hidden @2xl:table-cell">
               <Button className="cursor-pointer" variant="outline" onClick={()=>handleEdit(entry.id)}>
